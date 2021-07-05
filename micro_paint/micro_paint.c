@@ -39,19 +39,23 @@ int start_img(s_img_set * img, FILE*file){
 }
 
 void put_into_img(s_img_set *im,s_rect_set fig){
-    int i=0,k=0;
+    float i=0,k=0;
 
     while(i<im->width)
     {
         k=0;
         while(k<im->height)
         {
-            if((((fig.x)<=i || ((fig.x) + (fig.width))>=i ) || ((fig.y)>=k || ((fig.y +fig.height)<=k))))
+            if((((fig.x)>k || ((fig.x) + (fig.width))<k ) || ((fig.y)>i || ((fig.y +fig.height)<i))))
                {k++;continue;}
             else
-             {im->img[(k*im->width) + i]=fig.fill;
-                 if(fig.x - k >1 /*&& (fig.x + fig.width) -k <1*/)
-                 im->img[(i*im->width) + k]=fig.fill;
+             {
+                if((-fig.x+k<1.0000) || (fig.x+fig.width - k<1.0000) || (i -fig.y<1.0000)||(-i+fig.y+fig.height)<1.00000){
+                 //im->img[(int)((k*im->width) + i)]=fig.fill;
+                 //if(fig.x - k >1 && (fig.x + fig.width) -k <1)
+                 im->img[(int)((i*im->width) + k)]=fig.fill;}
+                 if(fig.type_of_r == 'R')
+                  im->img[(int)((i*im->width) + k)]=fig.fill;
              }
             k++;
         }
